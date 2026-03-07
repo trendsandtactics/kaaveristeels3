@@ -86,10 +86,12 @@ export default function GreenSteel() {
                 >
                     {/* Placeholder for actual tree image */}
                     <div className="absolute inset-0 bg-[#2d6a1b]/10 mix-blend-multiply z-10"></div>
-                    <img
+                    <Image
                         src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=1000"
                         alt="Green Sustainability Trees"
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
+                        unoptimized
                     />
                 </motion.div>
 

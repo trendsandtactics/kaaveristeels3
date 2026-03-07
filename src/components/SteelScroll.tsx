@@ -7,7 +7,6 @@ const FRAME_COUNT = 158;
 
 export default function SteelScroll() {
     const [loaded, setLoaded] = useState(false);
-    const [progress, setProgress] = useState(0);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const imagesRef = useRef<HTMLImageElement[]>([]);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -21,8 +20,6 @@ export default function SteelScroll() {
 
     useEffect(() => {
         // Preload images
-        let loadedCount = 0;
-
         const loadImages = async () => {
             const promises = Array.from({ length: FRAME_COUNT }).map((_, i) => {
                 return new Promise<void>((resolve) => {
@@ -31,8 +28,6 @@ export default function SteelScroll() {
                     img.src = `/sequence/sequence_${indexStr}.png`;
 
                     img.onload = () => {
-                        loadedCount++;
-                        setProgress((loadedCount / FRAME_COUNT) * 100);
                         imagesRef.current[i] = img;
                         resolve();
                     };
@@ -40,8 +35,6 @@ export default function SteelScroll() {
                     img.onerror = () => {
                         console.warn(`Failed to load frame ${i}`);
                         // Resolve anyway to prevent hanging on one missing frame
-                        loadedCount++;
-                        setProgress((loadedCount / FRAME_COUNT) * 100);
                         resolve();
                     };
                 });

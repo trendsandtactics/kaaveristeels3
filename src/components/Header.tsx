@@ -51,6 +51,7 @@ export default function Header() {
                 {/* Logo Area */}
                 <Link href="/" className="flex items-center z-50 transition-transform hover:scale-105">
                     {/* We are using standard img tag here so it doesn't hard-crash Next.js Image component if the file is not yet in place */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                         src="/image/kaveerilogo.png"
                         alt="Kaaveri TMT Bars & Structural"
