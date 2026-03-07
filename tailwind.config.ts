@@ -9,13 +9,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#0F172A",
-        foreground: "#f8fafc", // text-white/90 roughly
-        primary: "#0F172A",
+        background: "#ffffff",
+        foreground: "#111827",
+        primary: "#ffffff",
         accent: {
-          orange: "#FF6B00",
-          grey: "#94A3B8",
-          blue: "#1E293B"
+          red: "#b91c1c", // professional red
+          yellow: "#eab308", // hint of yellow
+          grey: "#f3f4f6"
         }
       },
       fontFamily: {

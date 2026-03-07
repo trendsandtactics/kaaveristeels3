@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useScroll, useTransform, motion, AnimatePresence } from "framer-motion";
-import Preloader from "./Preloader";
+import { useScroll, useTransform, motion } from "framer-motion";
 
 const FRAME_COUNT = 158;
 
@@ -29,7 +28,7 @@ export default function SteelScroll() {
                 return new Promise<void>((resolve) => {
                     const img = new Image();
                     const indexStr = i.toString().padStart(3, "0");
-                    img.src = `/sequence/sequence_${indexStr}.jpg`;
+                    img.src = `/sequence/sequence_${indexStr}.png`;
 
                     img.onload = () => {
                         loadedCount++;
@@ -49,7 +48,7 @@ export default function SteelScroll() {
             });
 
             await Promise.all(promises);
-            setTimeout(() => setLoaded(true), 800); // slight delay for smooth transition and readabiblity of 100%
+            setTimeout(() => setLoaded(true), 100); // reduced delay since preloader is gone
         };
 
         loadImages();
@@ -70,7 +69,7 @@ export default function SteelScroll() {
                 // Clear canvas
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                // Calculate object-contain styling to not crop the critical areas
+                // Calculate object-cover styling to fill the screen
                 const canvasRatio = canvas.width / canvas.height;
                 const imgRatio = img.width / img.height;
 
@@ -80,13 +79,13 @@ export default function SteelScroll() {
                 let offsetY = 0;
 
                 if (imgRatio > canvasRatio) {
-                    // Fit to width
-                    drawHeight = canvas.width / imgRatio;
-                    offsetY = (canvas.height - drawHeight) / 2;
-                } else {
-                    // Fit to height
+                    // Fit to height, crop width
                     drawWidth = canvas.height * imgRatio;
                     offsetX = (canvas.width - drawWidth) / 2;
+                } else {
+                    // Fit to width, crop height
+                    drawHeight = canvas.width / imgRatio;
+                    offsetY = (canvas.height - drawHeight) / 2;
                 }
 
                 ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
@@ -115,18 +114,15 @@ export default function SteelScroll() {
 
     return (
         <>
-            <AnimatePresence>
-                {!loaded && <Preloader progress={progress} />}
-            </AnimatePresence>
-
-            <div ref={containerRef} className="relative h-[600vh] bg-background w-full">
+            <div ref={containerRef} className="relative h-[600vh] bg-transparent w-full">
                 <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
 
                     <canvas
                         ref={canvasRef}
                         className="absolute inset-0 w-full h-full"
-                        style={{ opacity: loaded ? 1 : 0, transition: 'opacity 1s ease-in' }}
+                        style={{ opacity: loaded ? 1 : 0 }}
                     />
+
 
                     <div className="absolute inset-0 pointer-events-none z-10">
                         {/* The narrative overlays based on scroll progress */}
@@ -140,30 +136,36 @@ export default function SteelScroll() {
 }
 
 function OverlayTexts({ scrollYProgress }: { scrollYProgress: import("framer-motion").MotionValue<number> }) {
-    const text1Opacity = useTransform(scrollYProgress, [0, 0.05, 0.12, 0.18], [0, 1, 1, 0]);
-    const text2Opacity = useTransform(scrollYProgress, [0.22, 0.28, 0.35, 0.42], [0, 1, 1, 0]);
-    const text3Opacity = useTransform(scrollYProgress, [0.48, 0.53, 0.62, 0.68], [0, 1, 1, 0]);
-    const text4Opacity = useTransform(scrollYProgress, [0.77, 0.83, 0.95, 1], [0, 1, 1, 0]);
+    const text1Opacity = useTransform(scrollYProgress, [0.05, 0.1, 0.17, 0.23], [0, 1, 1, 0]);
+    const text2Opacity = useTransform(scrollYProgress, [0.27, 0.33, 0.4, 0.47], [0, 1, 1, 0]);
+    const text3Opacity = useTransform(scrollYProgress, [0.53, 0.58, 0.67, 0.73], [0, 1, 1, 0]);
+
+    // Initial visibility, hides during scroll, appears at the end
+    const text4Opacity = useTransform(
+        scrollYProgress,
+        [0, 0.03, 0.8, 0.88, 1],
+        [1, 0, 0, 1, 1]
+    );
 
     const scrollIndicatorOpacity = useTransform(scrollYProgress, [0, 0.03], [1, 0]);
 
     return (
-        <div className="w-full h-full flex flex-col items-center justify-center relative">
-            <motion.div style={{ opacity: text1Opacity }} className="absolute text-center max-w-4xl px-4 flex flex-col items-center">
+        <div className="w-full h-full flex flex-col items-center justify-end relative">
+            <motion.div style={{ opacity: text1Opacity }} className="absolute bottom-32 text-center max-w-4xl px-4 flex flex-col items-center">
                 <h2 className="font-heading text-4xl md:text-6xl text-white/90 drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] leading-tight">Strength Begins<br /> at the Core.</h2>
             </motion.div>
-            <motion.div style={{ opacity: text2Opacity }} className="absolute text-center max-w-4xl px-4 flex flex-col items-center">
+            <motion.div style={{ opacity: text2Opacity }} className="absolute bottom-32 text-center max-w-4xl px-4 flex flex-col items-center">
                 <h2 className="font-heading text-4xl md:text-6xl text-white/90 drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] leading-tight"><span className="text-accent-orange">Refined in Fire.</span><br /> Engineered for Endurance.</h2>
             </motion.div>
-            <motion.div style={{ opacity: text3Opacity }} className="absolute text-center max-w-4xl px-4 flex flex-col items-center">
+            <motion.div style={{ opacity: text3Opacity }} className="absolute bottom-32 text-center max-w-4xl px-4 flex flex-col items-center">
                 <h2 className="font-heading text-4xl md:text-6xl text-white/90 drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] leading-tight">Precision Rolled.<br /> <span className="text-accent-grey">Quality Assured.</span></h2>
             </motion.div>
-            <motion.div style={{ opacity: text4Opacity }} className="absolute text-center max-w-4xl px-4 flex flex-col items-center justify-center select-auto pointer-events-auto">
+            <motion.div style={{ opacity: text4Opacity }} className="absolute bottom-32 text-center max-w-4xl px-4 flex flex-col items-center justify-center select-auto pointer-events-auto">
                 <h2 className="font-heading text-5xl md:text-7xl text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] leading-tight font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-accent-grey">Building India&apos;s Future.</h2>
                 <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="mt-12 px-8 py-4 bg-accent-orange text-white font-body font-bold text-sm md:text-lg uppercase tracking-wider rounded-sm shadow-[0_0_30px_rgba(255,107,0,0.3)] hover:shadow-[0_0_50px_rgba(255,107,0,0.6)] transition-all"
+                    className="mt-12 px-8 py-4 bg-accent-yellow text-black font-body font-bold text-sm md:text-lg uppercase tracking-wider rounded-sm shadow-[0_0_30px_rgba(234,179,8,0.3)] hover:shadow-[0_0_50px_rgba(234,179,8,0.6)] transition-all"
                 >
                     Explore Our Products
                 </motion.button>
