@@ -6,7 +6,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { X } from "lucide-react";
-import admissionImage from "@/assets/admission-popup.jpeg";
+
 
 export const AdmissionPopup = () => {
   const [open, setOpen] = useState(false);
@@ -35,7 +35,7 @@ export const AdmissionPopup = () => {
           {/* Image - Clickable to redirect */}
           <Link to="/apply-now" onClick={() => setOpen(false)} className="block w-full h-full md:h-auto">
             <img
-              src="/admission-popup.jpeg"
+              src="/image/certificate.jpg"
               alt="Admissions Open - Bridge Course at JOIS Feb-Mar 2026"
               className="w-full h-full md:max-h-[85vh] md:w-auto object-contain md:rounded-2xl shadow-2xl"
             />
