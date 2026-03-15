@@ -7,17 +7,17 @@ import { motion } from "framer-motion";
 const products = [
     {
         name: "TMT Bars",
-        image: "/image/tmtbars.png",
+        image: "/tmtbars.png",
         description: "High-strength ribbed TMT bars built for maximum durability, flexibility, and earthquake resistance. The foundation of modern construction.",
     },
     {
         name: "Structural Beams",
-        image: "/image/structuralbeams.png",
+        image: "/structuralbar 1.png",
         description: "Premium structural steel beams crafted for heavy-duty load bearing. Ensuring structural integrity and flawless execution for mega-projects.",
     },
     {
         name: "Billets",
-        image: "/image/billets.png",
+        image: "/squarebar.png",
         description: "High-quality steel billets manufactured with precision. The perfect raw material for forging superior steel products.",
     }
 ];
