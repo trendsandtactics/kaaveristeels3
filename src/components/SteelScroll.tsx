@@ -4,7 +4,7 @@ export default function SteelScroll() {
     return (
         <div
             id="steel-scroll-section"
-            className="relative h-screen w-full bg-transparent overflow-hidden flex items-center justify-center"
+            className="relative h-[calc(100vh-5rem)] md:h-[calc(100vh-6rem)] w-full bg-transparent overflow-hidden flex items-center justify-center"
         >
             <video
                 className="absolute inset-0 w-full h-full object-contain"
@@ -16,7 +16,7 @@ export default function SteelScroll() {
                 preload="auto"
             />
 
-            <div className="absolute inset-0 bg-black/30 z-[1]" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-black/80 z-[1]" />
 
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-end pointer-events-none">
                 <div className="absolute bottom-32 text-center max-w-4xl px-4 flex flex-col items-center pointer-events-auto">
