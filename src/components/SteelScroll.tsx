@@ -8,7 +8,7 @@ export default function SteelScroll() {
         >
             <video
                 className="absolute inset-0 w-full h-full object-contain"
-                src="/12hero.mp4"
+                src="/hero2.mp4"
                 autoPlay
                 muted
                 loop
