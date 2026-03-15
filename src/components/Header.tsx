@@ -29,6 +29,7 @@ export default function Header() {
         if (steelSection) {
           const steelSectionBottom =
             steelSection.offsetTop + steelSection.offsetHeight;
+
           setScrolled(window.scrollY >= steelSectionBottom - 80);
           return;
         }
@@ -39,6 +40,7 @@ export default function Header() {
 
     handleScroll();
     window.addEventListener("scroll", handleScroll);
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
@@ -49,18 +51,21 @@ export default function Header() {
     ? "bg-transparent py-6"
     : "bg-white shadow-sm py-4 border-b border-gray-200";
 
-  const currentLogo = isDarkHero ? "/image/logo3.png" : "/image/logo.png";
+  /* LOGO SWITCH */
+  const currentLogo = isDarkHero
+    ? "/image/logo.png"     // hero transparent
+    : "/image/logo3.png";   // white header
 
   return (
     <header
       className={`fixed top-0 w-full z-50 transition-all duration-500 ease-in-out ${headerBg}`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
+
         <Link
           href="/"
-          className="flex items-center z-50 transition-transform duration-300 hover:scale-105"
+          className="flex items-center z-50 transition-transform hover:scale-105"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={currentLogo}
             alt="Kaaveri TMT Bars & Structural"
@@ -80,6 +85,7 @@ export default function Header() {
               }`}
             >
               {link.name}
+
               <span
                 className={`absolute bottom-0 left-0 w-full h-[2px] transform -translate-x-full transition-transform duration-300 group-hover:translate-x-0 ${
                   isDarkHero ? "bg-white" : "bg-accent-red"
@@ -92,33 +98,39 @@ export default function Header() {
             <span className="relative z-10 transition-colors duration-300 group-hover:text-accent-red">
               Request Quote
             </span>
+
             <div className="absolute inset-0 bg-white transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 z-0" />
           </button>
         </nav>
+
+        {/* MOBILE BUTTON */}
 
         <button
           className={`lg:hidden z-50 w-8 h-8 flex flex-col justify-center items-end gap-1 focus:outline-none ${
             isDarkHero ? "text-white" : "text-black"
           }`}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
         >
           <span
             className={`block h-[2px] transition-all duration-300 ${
               isDarkHero ? "bg-white" : "bg-black"
             } ${mobileMenuOpen ? "w-5 rotate-45 translate-y-[6px]" : "w-6"}`}
           />
+
           <span
             className={`block h-[2px] transition-all duration-300 ${
               isDarkHero ? "bg-white" : "bg-black"
             } ${mobileMenuOpen ? "w-5 opacity-0" : "w-5"}`}
           />
+
           <span
             className={`block h-[2px] transition-all duration-300 ${
               isDarkHero ? "bg-white" : "bg-black"
             } ${mobileMenuOpen ? "w-5 -rotate-45 -translate-y-[6px]" : "w-3"}`}
           />
         </button>
+
+        {/* MOBILE MENU */}
 
         <AnimatePresence>
           {mobileMenuOpen && (
@@ -130,14 +142,6 @@ export default function Header() {
               className="fixed inset-0 bg-white/95 backdrop-blur-2xl z-40 flex flex-col items-center justify-center p-8"
             >
               <div className="flex flex-col items-center gap-8 w-full max-w-sm mt-12">
-                <Link href="/" onClick={() => setMobileMenuOpen(false)}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/image/logo.png"
-                    alt="Kaaveri TMT Bars & Structural"
-                    className="h-14 w-auto object-contain"
-                  />
-                </Link>
 
                 {navLinks.map((link, i) => (
                   <motion.div
@@ -164,10 +168,12 @@ export default function Header() {
                 >
                   Request Quote
                 </motion.button>
+
               </div>
             </motion.div>
           )}
         </AnimatePresence>
+
       </div>
     </header>
   );
