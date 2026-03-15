@@ -60,7 +60,7 @@ export default function Header() {
           <img
             src={isHeroSection ? "/logo.png" : "/logo3.png"}
             alt="Kaaveri TMT Bars & Structural"
-            className={`h-12 md:h-16 w-auto object-contain transition-all duration-500 ${
+            className={`h-10 md:h-14 w-auto object-contain transition-all duration-500 ${
               isHeroSection
                 ? "drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]"
                 : ""
