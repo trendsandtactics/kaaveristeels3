@@ -4,7 +4,7 @@ export default function SteelScroll() {
     return (
         <div
             id="steel-scroll-section"
-            className="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center"
+            className="relative h-screen w-full bg-transparent overflow-hidden flex items-center justify-center"
         >
             <video
                 className="absolute inset-0 w-full h-full object-contain"

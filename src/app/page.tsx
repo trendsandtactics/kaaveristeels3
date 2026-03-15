@@ -8,20 +8,18 @@ import MapEmbed from "@/components/MapEmbed";
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between w-full relative">
-      {/* Full-screen Hero Video Section */}
-      <section id="hero-video-section" className="relative w-full h-screen flex items-end justify-center pb-24 md:pb-32 overflow-hidden">
+      {/* Global Background Video */}
+      <div className="fixed inset-0 w-full h-full -z-50 bg-black pointer-events-none">
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover z-0"
+          className="w-full h-full object-cover opacity-60"
         >
-          {/* Make sure to add your video file to the /public/video/ directory */}
           <source src="/video/hero.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10 z-10" />
-      </section>
+      </div>
 
       {/* Scrollytelling Hero Area */}
       <SteelScroll />
