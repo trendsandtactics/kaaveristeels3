@@ -43,95 +43,46 @@ export default function SteelScroll() {
         ))}
       </div>
 
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/35 to-black/65 z-[1]" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80 z-[2]" />
+      {/* Only dark overlay for readability */}
+      <div className="absolute inset-0 bg-black/40 z-[1]" />
 
       {/* Main Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 min-h-screen flex flex-col justify-end">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-end pb-36 md:pb-40 pt-36 md:pt-44">
-          {/* Left Content */}
-          <div className="max-w-xl">
+        <div className="flex justify-center lg:justify-end items-end pb-36 md:pb-40 pt-36 md:pt-44">
+          <div className="w-full max-w-xl text-left">
             <h2 className="font-heading text-4xl sm:text-5xl md:text-6xl text-white font-bold leading-[0.95] drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
               Building India&apos;s Future
             </h2>
 
-            <p className="mt-5 text-white/85 text-sm md:text-lg leading-relaxed max-w-lg">
+            <p className="mt-5 text-white/90 text-sm md:text-lg leading-relaxed max-w-lg">
               Premium TMT bars and structural steel solutions engineered for
               strength, durability, and trust in every project.
             </p>
 
-            <button className="mt-8 px-8 py-4 bg-accent-yellow text-black font-bold text-sm md:text-lg uppercase tracking-wider rounded-sm shadow-[0_0_30px_rgba(234,179,8,0.35)] hover:scale-105 transition duration-300">
+            {/* Logo below text */}
+            <div className="mt-6">
+              <Image
+                src="/logo.png"
+                alt="Kaaveri TMT Logo"
+                width={220}
+                height={90}
+                className="object-contain w-auto h-[60px] md:h-[78px]"
+              />
+            </div>
+
+            <button className="mt-8 px-8 py-4 bg-[#f4c400] text-black font-bold text-sm md:text-lg uppercase tracking-wider rounded-sm shadow-[0_0_30px_rgba(234,179,8,0.25)] hover:scale-105 transition duration-300">
               Explore Our Products
             </button>
-          </div>
-
-          {/* Right Content - fills empty space */}
-          <div className="w-full flex justify-start lg:justify-end">
-            <div className="w-full max-w-xl bg-black/25 backdrop-blur-md border border-white/10 rounded-2xl p-6 md:p-8 shadow-2xl">
-              <p className="text-accent-yellow text-xs md:text-sm font-semibold uppercase tracking-[0.3em]">
-                Why Kaaveri TMT
-              </p>
-
-              <h3 className="mt-3 text-white text-2xl md:text-4xl font-bold leading-tight">
-                Strong Steel. Trusted Quality. Built to Last.
-              </h3>
-
-              <p className="mt-4 text-white/80 text-sm md:text-base leading-relaxed">
-                Kaaveri TMT delivers high-performance steel products designed for
-                modern construction, infrastructure, and industrial excellence.
-                Our focus is on quality consistency, certified manufacturing,
-                and dependable strength for every build.
-              </p>
-
-              <div className="mt-6 grid grid-cols-2 gap-4">
-                <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                  <h4 className="text-accent-yellow text-2xl md:text-3xl font-bold">
-                    500+
-                  </h4>
-                  <p className="mt-1 text-white/75 text-xs md:text-sm">
-                    Grade Strength Performance
-                  </p>
-                </div>
-
-                <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                  <h4 className="text-accent-yellow text-2xl md:text-3xl font-bold">
-                    ISO
-                  </h4>
-                  <p className="mt-1 text-white/75 text-xs md:text-sm">
-                    Quality-Focused Manufacturing
-                  </p>
-                </div>
-
-                <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                  <h4 className="text-accent-yellow text-2xl md:text-3xl font-bold">
-                    BIS
-                  </h4>
-                  <p className="mt-1 text-white/75 text-xs md:text-sm">
-                    Standards & Compliance
-                  </p>
-                </div>
-
-                <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                  <h4 className="text-accent-yellow text-2xl md:text-3xl font-bold">
-                    24/7
-                  </h4>
-                  <p className="mt-1 text-white/75 text-xs md:text-sm">
-                    Reliable Supply Commitment
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
         {/* Certificates Bottom */}
         <div className="absolute bottom-4 left-0 w-full z-20 px-6 md:px-12">
           <div className="max-w-7xl mx-auto">
-            <div className="w-full rounded-2xl border border-white/10 bg-black/35 backdrop-blur-md px-4 md:px-6 py-4 md:py-5 shadow-xl">
+            <div className="w-full rounded-2xl border border-white/10 bg-black/45 backdrop-blur-md px-4 md:px-6 py-4 md:py-5 shadow-xl">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                  <p className="text-accent-yellow text-xs md:text-sm font-semibold uppercase tracking-[0.25em]">
+                  <p className="text-[#f4c400] text-xs md:text-sm font-semibold uppercase tracking-[0.25em]">
                     Certifications
                   </p>
                   <p className="text-white/80 text-xs md:text-sm mt-1">
