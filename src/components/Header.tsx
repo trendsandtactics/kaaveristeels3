@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -15,33 +16,10 @@ const navLinks = [
 ];
 
 export default function Header() {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const pathname = usePathname();
   const isHomePage = pathname === "/";
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (pathname === "/") {
-        // Always maintain a transparent background on the home page
-        setScrolled(false);
-        return;
-      }
-
-      // other pages always white header
-      setScrolled(true);
-    };
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
-    };
-  }, [pathname]);
 
   const isTransparentHeader = isHomePage;
 
@@ -60,10 +38,13 @@ export default function Header() {
           href="/"
           className="flex items-center z-50 transition-transform hover:scale-105"
         >
-          <img
+          <Image
             src={currentLogo}
             alt="Kaaveri TMT Bars & Structural"
+            width={200}
+            height={56}
             className="h-10 md:h-14 w-auto object-contain transition-all duration-500"
+            priority
           />
         </Link>
 
