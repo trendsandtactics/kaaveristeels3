@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -17,11 +17,26 @@ const navLinks = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const pathname = usePathname();
   const isHomePage = pathname === "/";
 
-  const isTransparentHeader = isHomePage;
+  useEffect(() => {
+    const handleScroll = () => {
+      // Header becomes solid after scrolling down 50px
+      setScrolled(window.scrollY > 50);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const isTransparentHeader = isHomePage && !scrolled;
 
   const headerBg = isTransparentHeader
     ? "bg-transparent py-6"
