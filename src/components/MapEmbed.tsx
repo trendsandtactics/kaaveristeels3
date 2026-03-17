@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Building2, Factory } from "lucide-react";
 
 const locations = [
   {
-    title: "Office Address",
+    title: "Head Office",
     icon: Building2,
     label: "Corporate Office",
     address: [
@@ -43,21 +43,12 @@ const locations = [
 export default function MapEmbed() {
   const [activeTab, setActiveTab] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveTab((prev) => (prev + 1) % locations.length);
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   const activeLocation = locations[activeTab];
   const Icon = activeLocation.icon;
 
   return (
     <section className="relative w-full py-20 md:py-28 px-6 md:px-12 bg-gradient-to-b from-white to-[#f8f8f8] overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -84,7 +75,7 @@ export default function MapEmbed() {
             <button
               key={index}
               onClick={() => setActiveTab(index)}
-              className={`relative px-5 md:px-7 py-3 rounded-full text-sm md:text-base font-semibold transition-all duration-300 border ${
+              className={`px-5 md:px-7 py-3 rounded-full text-sm md:text-base font-semibold transition-all duration-300 border ${
                 activeTab === index
                   ? "bg-accent-red text-white border-accent-red shadow-lg"
                   : "bg-white text-black/70 border-black/10 hover:border-accent-red/40 hover:text-accent-red"
@@ -95,26 +86,15 @@ export default function MapEmbed() {
           ))}
         </div>
 
-        {/* Progress line */}
-        <div className="w-full max-w-md mx-auto h-1 bg-black/10 rounded-full overflow-hidden mb-10">
-          <motion.div
-            key={activeTab}
-            initial={{ width: "0%" }}
-            animate={{ width: "100%" }}
-            transition={{ duration: 4, ease: "linear" }}
-            className="h-full bg-accent-yellow rounded-full"
-          />
-        </div>
-
         {/* Active Tab Content */}
         <div className="relative overflow-hidden rounded-[28px] border border-black/10 bg-white shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
-              initial={{ opacity: 0, x: 80 }}
+              initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -80 }}
-              transition={{ duration: 0.55, ease: "easeInOut" }}
+              exit={{ opacity: 0, x: -40 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
               className="grid grid-cols-1 lg:grid-cols-2"
             >
               {/* Content */}
