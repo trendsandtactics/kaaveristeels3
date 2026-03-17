@@ -21,7 +21,7 @@ export default function AboutHero() {
                 }
             },
             {
-                threshold: 0.7,
+                threshold: 0.3,
             }
         );
 
