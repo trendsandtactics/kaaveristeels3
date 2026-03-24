@@ -1,58 +1,105 @@
-"use client";
-
 import React from "react";
-import GenericPlaceholderPage from "@/components/GenericPlaceholderPage";
-import { motion } from "framer-motion";
+import Link from "next/link";
+import { Settings, CheckCircle, Users, Truck } from "lucide-react";
+
+export const metadata = {
+    title: "Infrastructure | KAAVERI TMT Bars & Structural",
+    description: "Discover KAAVERI's advanced manufacturing facilities that power high-capacity, high-quality steel production.",
+};
 
 export default function InfrastructurePage() {
-    return (
-        <GenericPlaceholderPage
-            title="World-Class Infrastructure"
-            subtitle="Our Facilities"
-            description="Step into the future of steel manufacturing. Our state-of-the-art facilities are engineered for maximum efficiency, precision, and sustainability."
-            icon="🏗️"
-            color="accent-yellow"
-        >
-            <div className="max-w-7xl mx-auto px-6 md:px-12 py-24">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mb-24">
-                    <div>
-                        <h3 className="font-heading text-4xl text-black mb-6">Automated Rolling Mills</h3>
-                        <div className="w-16 h-1 bg-accent-yellow mb-8" />
-                        <p className="font-body text-black/70 text-lg leading-relaxed mb-6 font-medium">
-                            Our primary manufacturing facility features fully automated, continuous rolling mills capable of producing thousands of metric tons of extremely uniform TMT bars daily. By removing human error from the direct rolling process, we guarantee exact dimensions and superior surface finish on every single bar.
-                        </p>
-                        <ul className="space-y-4 font-body text-black font-medium">
-                            <li className="flex items-center gap-3"><span className="text-accent-yellow">✓</span> PLC Controlled Operations</li>
-                            <li className="flex items-center gap-3"><span className="text-accent-yellow">✓</span> High-Speed Block Mills</li>
-                            <li className="flex items-center gap-3"><span className="text-accent-yellow">✓</span> Automated Cooling Beds</li>
-                        </ul>
-                    </div>
-                    <div className="h-[400px] bg-black/5 rounded-lg border border-black/10 flex items-center justify-center p-8 text-center bg-[url('https://images.unsplash.com/photo-1565514020179-026ddbaaf426?q=80&w=2942&auto=format&fit=crop')] bg-cover bg-center relative overflow-hidden">
-                        <div className="absolute inset-0 bg-black/40" />
-                        <span className="relative z-10 font-heading text-3xl text-white tracking-widest uppercase">Mill Plant 01</span>
-                    </div>
-                </div>
+    const highlights = [
+        {
+            icon: Settings,
+            title: "Modern Manufacturing Units",
+            description: "Equipped with advanced equipment for efficient and consistent steel production.",
+        },
+        {
+            icon: CheckCircle,
+            title: "Quality Control Systems",
+            description: "Comprehensive testing and inspection processes at every stage of production.",
+        },
+        {
+            icon: Users,
+            title: "Skilled Workforce",
+            description: "Experienced teams managing production, safety, and technical excellence.",
+        },
+        {
+            icon: Truck,
+            title: "Efficient Logistics Support",
+            description: "Strong dispatch and handling systems for timely delivery and smooth operations.",
+        }
+    ];
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {[
-                        { title: "Advanced Quality Testing Lab", desc: "Equipped with Universal Testing Machines (UTM), Spectrometers, and rigorous bend/rebend stations." },
-                        { title: "Smart Extrusion Hub", desc: "For manufacturing intricate structural components using precision temperature control and high-pressure extrusion." },
-                        { title: "Sustainable Power Grid", desc: "Fueled by captive renewable energy sources aiming to reduce our carbon footprint by 40%." }
-                    ].map((facility, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.1 }}
-                            className="bg-white p-8 border-t-4 border-black shadow-xl hover:-translate-y-2 transition-transform duration-300"
-                        >
-                            <h4 className="font-heading text-xl md:text-2xl text-black mb-4">{facility.title}</h4>
-                            <p className="font-body text-black/70 leading-relaxed font-medium">{facility.desc}</p>
-                        </motion.div>
-                    ))}
+    return (
+        <main className="flex min-h-screen flex-col w-full relative pt-24 bg-background">
+            {/* Hero Section */}
+            <div className="w-full py-24 md:py-32 bg-[#0a0a0a] text-white relative overflow-hidden shadow-2xl">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_0%,transparent_60%)] pointer-events-none mix-blend-overlay" />
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none opacity-30" />
+
+                <div className="max-w-4xl mx-auto px-6 text-center z-10 relative">
+                    <div className="flex items-center justify-center gap-4 mb-6">
+                        <div className="w-12 h-[2px] bg-accent-red" />
+                        <h1 className="font-body uppercase tracking-[0.2em] font-bold text-sm text-white">
+                            Infrastructure
+                        </h1>
+                        <div className="w-12 h-[2px] bg-accent-red" />
+                    </div>
+                    <h2 className="font-heading text-5xl md:text-7xl mb-6 text-white font-extrabold drop-shadow-md">
+                        Advanced Facilities That Power <span className="text-accent-red">Quality Steel</span>
+                    </h2>
                 </div>
             </div>
-        </GenericPlaceholderPage>
+
+            {/* Main Content Section */}
+            <section className="max-w-5xl mx-auto px-6 md:px-12 py-20 text-center">
+                <h3 className="font-heading text-4xl md:text-5xl text-black font-extrabold mb-8">
+                    Built for Precision. Driven by Technology.
+                </h3>
+                <div className="font-body text-black/70 text-lg leading-relaxed space-y-6">
+                    <p>
+                        KAAVERI’s manufacturing infrastructure is designed to support high-capacity, high-quality steel production with complete operational efficiency. Our facilities combine advanced machinery, modern process controls, and skilled manpower to deliver products that meet strict performance standards.
+                    </p>
+                    <p>
+                        With a focus on consistency and precision, we continuously invest in technology and systems that strengthen our production capabilities and ensure reliable output across our product range.
+                    </p>
+                </div>
+            </section>
+
+            {/* Highlights Grid */}
+            <section className="w-full bg-[#f8f9fa] py-24 px-6 md:px-12 border-t border-black/5">
+                <div className="max-w-7xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                        {highlights.map((item, i) => {
+                            const Icon = item.icon;
+                            return (
+                                <div key={i} className="bg-white p-10 border border-gray-100 shadow-xl rounded-sm hover:shadow-2xl transition-shadow duration-300 group">
+                                    <div className="w-16 h-16 bg-gray-50 flex items-center justify-center rounded-sm mb-6 group-hover:bg-accent-red transition-colors duration-300">
+                                        <Icon className="w-8 h-8 text-black group-hover:text-white transition-colors duration-300" />
+                                    </div>
+                                    <h4 className="font-heading text-2xl text-black font-bold mb-4">{item.title}</h4>
+                                    <p className="font-body text-black/70 leading-relaxed font-medium">{item.description}</p>
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+            </section>
+
+            {/* CTA Section */}
+            <section className="w-full bg-accent-yellow py-16 px-6 md:px-12 text-center">
+                <div className="max-w-3xl mx-auto">
+                    <h3 className="font-heading text-3xl md:text-5xl text-black font-extrabold mb-8">
+                        Partner with Excellence
+                    </h3>
+                    <Link href="/request-quote">
+                        <button className="px-10 py-4 bg-black text-white font-body text-sm uppercase tracking-[0.2em] font-bold hover:bg-accent-red transition-colors duration-300 shadow-xl rounded-sm">
+                            Request Quote
+                        </button>
+                    </Link>
+                </div>
+            </section>
+        </main>
     );
 }
