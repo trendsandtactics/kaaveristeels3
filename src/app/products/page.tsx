@@ -1,5 +1,5 @@
 import React from "react";
-import { getProductCategories, getProducts, getProductsPageContent } from "@/lib/pb";
+import { getProductCategories, getProducts, getProductsPageContent } from "@/utils/pocketbase";
 import ProductsClient from "@/components/ProductsClient";
 
 // Generate Dynamic Metadata from PocketBase
