@@ -2,7 +2,7 @@
 
 import pool from './db';
 
-export async function submitContactForm(formData: FormData) {
+export async function submitContactForm(formData: FormData): Promise<void> {
     const name = formData.get('name');
     const company = formData.get('company');
     const phone = formData.get('phone');
@@ -21,9 +21,7 @@ export async function submitContactForm(formData: FormData) {
         const values = [name, company, phone, email, productType, quantity, location, notes];
         
         await pool.execute(query, values);
-        return { success: true, message: 'Request submitted successfully!' };
     } catch (error) {
         console.error('Database insertion error:', error);
-        return { success: false, message: 'Failed to submit request. Please try again.' };
     }
 }
