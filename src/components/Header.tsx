@@ -13,11 +13,6 @@ const navLinks = [
   { name: "Media & Events", href: "/media-events" },
   { name: "Blogs", href: "/blogs" },
   { name: "Projects", href: "/projects" },
-  { name: "Careers", href: "/careers" },
-  { name: "Find Dealers", href: "/dealers" },
-  { name: "Calculators", href: "/construction-steel-calculator" },
-  { name: "Gallery", href: "/photo-gallery" },
-  { name: "Certifications", href: "/certifications" },
   { name: "Contact Us", href: "/contact-us" },
 ];
 
@@ -74,7 +69,7 @@ export default function Header() {
             <Link
               key={link.name}
               href={link.href}
-              className={`relative font-body text-[9px] uppercase tracking-[0.16em] transition-colors group overflow-hidden font-semibold ${
+              className={`relative font-body text-[10px] uppercase tracking-[0.18em] transition-colors group overflow-hidden font-semibold ${
                 isTransparentHeader
                   ? "text-white/90 hover:text-white"
                   : "text-black hover:text-accent-red"
@@ -89,7 +84,7 @@ export default function Header() {
             </Link>
           ))}
 
-          <Link href="/product-enquiry" className="ml-3 relative px-5 py-2.5 bg-accent-red text-white font-body text-[10px] uppercase tracking-[0.2em] font-bold overflow-hidden group border-2 border-accent-red">
+          <Link href="/product-enquiry" className="ml-2 relative px-5 py-2.5 bg-accent-red text-white font-body text-[10px] uppercase tracking-[0.2em] font-bold overflow-hidden group border-2 border-accent-red">
             <span className="relative z-10 transition-colors duration-300 group-hover:text-accent-red">
               Request Quote
             </span>
