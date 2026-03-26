@@ -1,93 +1,71 @@
 import React from "react";
-import { submitContactForm } from "./actions";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { logout } from "./actions";
+import pool from "../contact-us/db";
+
+export const dynamic = 'force-dynamic'; // Ensures this page isn't statically cached
 
 export const metadata = {
-    title: "Request a Quote | KAAVERI TMT Bars & Structural",
-    description: "Request a custom quote for KAAVERI TMT Bars, Structural Steel, and Billets for your next construction project.",
+    title: "Dashboard | KAAVERI TMT",
 };
 
-export default function RequestQuotePage() {
+export default async function AdminDashboard() {
+    // 1. Verify authentication
+    const session = cookies().get('admin_session');
+    if (!session || session.value !== 'authenticated') {
+        redirect('/admin/login');
+    }
+
+    // 2. Fetch submissions from the database
+    let requests: any[] = [];
+    try {
+        // Using `ORDER BY id DESC` if you have an auto-incrementing ID to show newest first.
+        const [rows] = await pool.query('SELECT * FROM quote_requests ORDER BY id DESC LIMIT 100');
+        requests = rows as any[];
+    } catch (err) {
+        console.error("Failed to fetch requests:", err);
+    }
+
     return (
-        <main className="flex min-h-screen flex-col w-full relative pt-24 bg-background">
-            {/* Hero Section */}
-            <div className="w-full py-16 md:py-20 bg-accent-yellow text-black relative overflow-hidden shadow-xl">
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none opacity-50" />
-                <div className="max-w-4xl mx-auto px-6 text-center z-10 relative">
-                    <h1 className="font-heading text-4xl md:text-6xl font-extrabold drop-shadow-sm mb-4">
-                        Request a Quote
-                    </h1>
-                    <p className="font-body text-black/70 font-medium max-w-xl mx-auto">
-                        Fill out the form below with your project requirements, and our sales team will get back to you with a tailored proposal.
-                    </p>
-                </div>
-            </div>
-
-            {/* Form Section */}
-            <section className="w-full max-w-4xl mx-auto px-6 md:px-12 py-20">
-                <div className="bg-white p-8 md:p-12 border border-gray-100 rounded-sm shadow-2xl">
-                    <form action={submitContactForm} className="flex flex-col gap-8">
-                        
-                        {/* Personal/Company Details */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="flex flex-col gap-2">
-                                <label className="font-body text-xs font-bold uppercase tracking-widest text-black/70">Name *</label>
-                                <input type="text" name="name" required placeholder="Full Name" className="w-full p-4 border border-gray-200 rounded-sm focus:outline-none focus:border-accent-red bg-[#f8f9fa] focus:bg-white transition-colors" />
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <label className="font-body text-xs font-bold uppercase tracking-widest text-black/70">Company Name</label>
-                                <input type="text" name="company" placeholder="Organization" className="w-full p-4 border border-gray-200 rounded-sm focus:outline-none focus:border-accent-red bg-[#f8f9fa] focus:bg-white transition-colors" />
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <label className="font-body text-xs font-bold uppercase tracking-widest text-black/70">Phone *</label>
-                                <input type="tel" name="phone" required placeholder="Contact Number" className="w-full p-4 border border-gray-200 rounded-sm focus:outline-none focus:border-accent-red bg-[#f8f9fa] focus:bg-white transition-colors" />
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <label className="font-body text-xs font-bold uppercase tracking-widest text-black/70">Email *</label>
-                                <input type="email" name="email" required placeholder="Email Address" className="w-full p-4 border border-gray-200 rounded-sm focus:outline-none focus:border-accent-red bg-[#f8f9fa] focus:bg-white transition-colors" />
-                            </div>
-                        </div>
-
-                        <hr className="border-gray-100" />
-
-                        {/* Product Requirements */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="flex flex-col gap-2">
-                                <label className="font-body text-xs font-bold uppercase tracking-widest text-black/70">Product Type *</label>
-                                <select name="productType" required className="w-full p-4 border border-gray-200 rounded-sm focus:outline-none focus:border-accent-red bg-[#f8f9fa] focus:bg-white transition-colors appearance-none">
-                                    <option value="">Select a Product</option>
-                                    <option value="tmt-bars">TMT Bars</option>
-                                    <option value="structural-steel">Structural Steel</option>
-                                    <option value="billets">Billets</option>
-                                    <option value="other">Multiple / Other</option>
-                                </select>
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <label className="font-body text-xs font-bold uppercase tracking-widest text-black/70">Estimated Quantity *</label>
-                                <input type="text" name="quantity" required placeholder="e.g., 50 Metric Tons" className="w-full p-4 border border-gray-200 rounded-sm focus:outline-none focus:border-accent-red bg-[#f8f9fa] focus:bg-white transition-colors" />
-                            </div>
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                            <label className="font-body text-xs font-bold uppercase tracking-widest text-black/70">Project Location</label>
-                            <input type="text" name="location" placeholder="City / State" className="w-full p-4 border border-gray-200 rounded-sm focus:outline-none focus:border-accent-red bg-[#f8f9fa] focus:bg-white transition-colors" />
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                            <label className="font-body text-xs font-bold uppercase tracking-widest text-black/70">Additional Notes</label>
-                            <textarea name="notes" rows={4} placeholder="Specific grades, sizes, or timeline requirements..." className="w-full p-4 border border-gray-200 rounded-sm focus:outline-none focus:border-accent-red bg-[#f8f9fa] focus:bg-white transition-colors resize-none"></textarea>
-                        </div>
-
-                        <div className="flex justify-center mt-4">
-                            <button type="submit" className="w-full md:w-auto px-16 py-5 bg-black text-white font-body text-sm uppercase tracking-[0.2em] font-bold hover:bg-accent-red transition-colors duration-300 shadow-xl rounded-sm">
-                                Submit Request
-                            </button>
-                        </div>
-                        <p className="text-center font-body text-xs text-black/50 mt-2">
-                            Your details are safe with us. We will respond within 24 hours.
-                        </p>
+        <div className="min-h-screen bg-gray-50 pt-32 pb-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+                <div className="flex justify-between items-center mb-8">
+                    <h1 className="text-3xl font-bold text-gray-900 font-heading">Quote Requests</h1>
+                    <form action={logout}>
+                        <button type="submit" className="px-6 py-3 bg-black text-white text-xs font-bold uppercase tracking-widest rounded-sm hover:bg-accent-red transition-colors shadow-md">
+                            Logout
+                        </button>
                     </form>
                 </div>
-            </section>
-        </main>
+                
+                <div className="bg-white shadow-xl rounded-sm border border-gray-100 overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-[#f8f9fa]">
+                            <tr>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-black/70 uppercase tracking-widest">Name / Company</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-black/70 uppercase tracking-widest">Contact</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-black/70 uppercase tracking-widest">Details</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-black/70 uppercase tracking-widest">Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200 font-body">
+                            {requests.length > 0 ? requests.map((req, i) => (
+                                <tr key={req.id || i} className="hover:bg-gray-50 transition-colors">
+                                    <td className="px-6 py-4 text-sm text-gray-900"><span className="font-bold">{req.name}</span><br/><span className="text-gray-500">{req.company}</span></td>
+                                    <td className="px-6 py-4 text-sm text-gray-500">{req.email}<br/>{req.phone}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-900"><span className="font-semibold">{req.product_type}</span><br/><span className="text-gray-500">{req.quantity}</span><br/><span className="text-xs text-gray-400">{req.location}</span></td>
+                                    <td className="px-6 py-4 text-sm text-gray-500 max-w-xs">{req.notes || '-'}</td>
+                                </tr>
+                            )) : (
+                                <tr>
+                                    <td colSpan={4} className="px-6 py-8 text-center text-gray-500">No requests found.</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     );
 }
