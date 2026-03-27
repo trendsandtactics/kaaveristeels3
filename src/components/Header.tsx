@@ -40,11 +40,20 @@ export default function Header() {
     setDropdownOpen(false);
   }, [pathname]);
 
+<<<<<<< HEAD
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     onScroll();
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
+=======
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+>>>>>>> e582e03 (hu)
   }, []);
 
   useEffect(() => {
@@ -64,6 +73,11 @@ export default function Header() {
     ? "bg-transparent py-6"
     : "bg-white shadow-sm py-4 border-b border-gray-200";
 
+<<<<<<< HEAD
+=======
+  const currentLogo = "/logo3.png";
+
+>>>>>>> e582e03 (hu)
   return (
     <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out ${headerClass}`}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
