@@ -42,6 +42,12 @@ MYSQL_DATABASE=u546576758_kaaveri
 
 > Production tip: set these values in your hosting provider's environment settings (for example, Vercel Project Settings → Environment Variables) rather than committing credentials into source control.
 
+Fallback defaults used by the app when envs are missing:
+- `MYSQL_HOST=193.203.184.173`
+- `MYSQL_USER=u546576758_kaaveri`
+- `MYSQL_PASSWORD=Admin@2026@#`
+- `MYSQL_DATABASE=u546576758_kaaveri`
+
 
 ### 1.1) Quick production mapping for lyfee.in
 

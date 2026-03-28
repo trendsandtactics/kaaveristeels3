@@ -59,10 +59,18 @@ function buildPoolOptions(): PoolOptions {
     user: requiredFrom({
       label: 'database user',
       names: ['MYSQL_USER', 'DB_USER'],
-      defaultValue: firstEnv('MYSQL_DATABASE', 'DB_NAME', 'DATABASE_NAME'),
+      defaultValue: firstEnv('MYSQL_DATABASE', 'DB_NAME', 'DATABASE_NAME') || 'u546576758_kaaveri',
     }),
-    password: requiredFrom({ label: 'database password', names: ['MYSQL_PASSWORD', 'DB_PASSWORD'] }),
-    database: requiredFrom({ label: 'database name', names: ['MYSQL_DATABASE', 'DB_NAME', 'DATABASE_NAME'] }),
+    password: requiredFrom({
+      label: 'database password',
+      names: ['MYSQL_PASSWORD', 'DB_PASSWORD'],
+      defaultValue: 'Admin@2026@#',
+    }),
+    database: requiredFrom({
+      label: 'database name',
+      names: ['MYSQL_DATABASE', 'DB_NAME', 'DATABASE_NAME'],
+      defaultValue: 'u546576758_kaaveri',
+    }),
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
