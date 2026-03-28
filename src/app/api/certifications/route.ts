@@ -64,11 +64,13 @@ export async function POST(request: NextRequest) {
     const description = String(formData.get("description") ?? "").trim();
     const issuedBy = String(formData.get("issuedBy") ?? "").trim();
     const issueDate = String(formData.get("issueDate") ?? "").trim() || null;
-    const file = formData.get("file");
+    const fileEntry = formData.get("file");
 
-    if (!title || !description || !issuedBy || !(file instanceof File)) {
+    if (!title || !description || !issuedBy || !fileEntry || typeof fileEntry === "string") {
       return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
     }
+
+    const file = fileEntry as Blob & { name?: string };
 
     if (file.size === 0) {
       return NextResponse.json({ error: "Please choose a certificate file." }, { status: 400 });
@@ -85,7 +87,7 @@ export async function POST(request: NextRequest) {
       description,
       issuedBy,
       issueDate,
-      fileName: file.name,
+      fileName: file.name?.trim() || "certificate-upload",
       mimeType: file.type || "application/octet-stream",
       fileData: fileBuffer,
     });
@@ -93,6 +95,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, id }, { status: 201 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "Failed to upload certificate." }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : "Failed to upload certificate.";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
