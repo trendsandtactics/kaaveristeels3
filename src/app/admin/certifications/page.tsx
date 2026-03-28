@@ -56,6 +56,7 @@ export default function AdminCertificationsPage() {
     formData.append("issuedBy", issuedBy);
     formData.append("issueDate", issueDate);
     formData.append("file", file);
+    formData.append("adminKey", adminKey);
 
     try {
       const response = await fetch("/api/certifications", {

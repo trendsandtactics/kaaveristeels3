@@ -1,14 +1,43 @@
 import { NextRequest, NextResponse } from "next/server";
 import { insertCertification, listCertifications } from "@/lib/certifications";
 
-function isAuthorized(request: NextRequest): boolean {
-  const adminKey = process.env.ADMIN_PANEL_KEY;
+function configuredAdminSecret(): string {
+  return (
+    process.env.ADMIN_PANEL_KEY?.trim() ||
+    process.env.ADMIN_KEY?.trim() ||
+    process.env.MYSQL_PASSWORD?.trim() ||
+    ""
+  );
+}
 
-  if (!adminKey) {
+function getAdminKey(request: NextRequest, formData?: FormData): string {
+  const headerKey = request.headers.get("x-admin-key")?.trim();
+
+  if (headerKey) {
+    return headerKey;
+  }
+
+  const authHeader = request.headers.get("authorization")?.trim();
+  if (authHeader?.toLowerCase().startsWith("bearer ")) {
+    return authHeader.slice(7).trim();
+  }
+
+  const formKey = formData?.get("adminKey");
+  if (typeof formKey === "string") {
+    return formKey.trim();
+  }
+
+  return "";
+}
+
+function isAuthorized(request: NextRequest, formData?: FormData): boolean {
+  const expectedKey = configuredAdminSecret();
+
+  if (!expectedKey) {
     return false;
   }
 
-  return request.headers.get("x-admin-key") === adminKey;
+  return getAdminKey(request, formData) === expectedKey;
 }
 
 export async function GET() {
@@ -23,11 +52,12 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    if (!isAuthorized(request)) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const formData = await request.formData();
+
+    if (!isAuthorized(request, formData)) {
+      return NextResponse.json({ error: "Unauthorized. Check ADMIN_PANEL_KEY (or ADMIN_KEY) in environment." }, { status: 401 });
     }
 
-    const formData = await request.formData();
     const title = String(formData.get("title") ?? "").trim();
     const description = String(formData.get("description") ?? "").trim();
     const issuedBy = String(formData.get("issuedBy") ?? "").trim();

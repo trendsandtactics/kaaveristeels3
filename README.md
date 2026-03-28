@@ -36,6 +36,8 @@ MYSQL_DATABASE=kaaveri
 
 # Required for /api/certifications POST (admin upload)
 ADMIN_PANEL_KEY=change_this_secret
+# Optional legacy alias:
+# ADMIN_KEY=change_this_secret
 ```
 
 > Production tip: set these values in your hosting provider's environment settings (for example, Vercel Project Settings → Environment Variables) rather than committing credentials into source control.
@@ -101,3 +103,8 @@ The API auto-creates these tables if they do not exist:
 - DB connection logic is in `src/lib/mysql.ts`.
 - Certifications helper logic is in `src/lib/certifications.ts`.
 - Admin certifications UI is available at `/admin/certifications`.
+
+
+### Troubleshooting
+
+- If uploads return `Unauthorized`, verify `ADMIN_PANEL_KEY` (or `ADMIN_KEY`) is set in your deployment environment and the same value is entered in `/admin/certifications`.
