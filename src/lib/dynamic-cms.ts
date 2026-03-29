@@ -248,7 +248,7 @@ export async function ensureDynamicCmsTables(): Promise<void> {
   `);
 }
 
-export async function listModuleItems(moduleName: string, options?: { status?: string; q?: string }): Promise<ContentRow[]> {
+export async function listModuleItems(moduleName: string, options?: { status?: string; q?: string; limit?: number }): Promise<ContentRow[]> {
   await ensureDynamicCmsTables();
 
   if (moduleName === "dealers") {
@@ -262,7 +262,8 @@ export async function listModuleItems(moduleName: string, options?: { status?: s
       where.push("(title LIKE ? OR city LIKE ? OR state LIKE ?)");
       params.push(`%${options.q}%`, `%${options.q}%`, `%${options.q}%`);
     }
-    const sql = `SELECT id,title,slug,short_description,content,NULL as cover_image,NULL as file_url,NULL as video_url,status,featured,sort_order,NULL as meta_title,NULL as meta_description,NULL as extra_data,created_at,updated_at FROM dealers ${where.length ? `WHERE ${where.join(" AND ")}` : ""} ORDER BY featured DESC, sort_order ASC, updated_at DESC`;
+    const limit = Math.min(Math.max(options?.limit ?? 50, 1), 200);
+    const sql = `SELECT id,title,slug,short_description,content,NULL as cover_image,NULL as file_url,NULL as video_url,status,featured,sort_order,NULL as meta_title,NULL as meta_description,NULL as extra_data,created_at,updated_at FROM dealers ${where.length ? `WHERE ${where.join(" AND ")}` : ""} ORDER BY featured DESC, sort_order ASC, updated_at DESC LIMIT ${limit}`;
     const [rows] = await getPool().query<ContentRow[]>(sql, params);
     return rows;
   }
@@ -282,7 +283,8 @@ export async function listModuleItems(moduleName: string, options?: { status?: s
     params.push(`%${options.q}%`, `%${options.q}%`);
   }
 
-  const sql = `SELECT * FROM ${table} ${where.length ? `WHERE ${where.join(" AND ")}` : ""} ORDER BY featured DESC, sort_order ASC, updated_at DESC`;
+  const limit = Math.min(Math.max(options?.limit ?? 50, 1), 200);
+  const sql = `SELECT * FROM ${table} ${where.length ? `WHERE ${where.join(" AND ")}` : ""} ORDER BY featured DESC, sort_order ASC, updated_at DESC LIMIT ${limit}`;
   const [rows] = await getPool().query<ContentRow[]>(sql, params);
   return rows;
 }
@@ -404,4 +406,26 @@ export async function deleteModuleItem(moduleName: string, id: number): Promise<
   const table = MODULE_TABLES[moduleKey];
   const [result] = await getPool().execute<ResultSetHeader>(`DELETE FROM ${table} WHERE id = ?`, [id]);
   return result.affectedRows > 0;
+}
+
+
+export async function getPublicModuleItemBySlug(moduleName: string, slug: string): Promise<RowDataPacket | null> {
+  await ensureDynamicCmsTables();
+
+  if (moduleName === "dealers") {
+    const [rows] = await getPool().query<RowDataPacket[]>(
+      "SELECT * FROM dealers WHERE slug = ? AND status = 'published' LIMIT 1",
+      [slug],
+    );
+    return rows[0] ?? null;
+  }
+
+  const moduleKey = safeModule(moduleName);
+  const table = MODULE_TABLES[moduleKey];
+  const [rows] = await getPool().query<RowDataPacket[]>(
+    `SELECT * FROM ${table} WHERE slug = ? AND status = 'published' LIMIT 1`,
+    [slug],
+  );
+
+  return rows[0] ?? null;
 }

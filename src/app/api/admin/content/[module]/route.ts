@@ -6,7 +6,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const { module } = await params;
     const q = request.nextUrl.searchParams.get("q") ?? undefined;
     const status = request.nextUrl.searchParams.get("status") ?? undefined;
-    const rows = await listModuleItems(module, { q, status });
+    const limit = Number(request.nextUrl.searchParams.get("limit") ?? "50");
+    const rows = await listModuleItems(module, { q, status, limit });
     return NextResponse.json({ data: rows });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unable to fetch items.";

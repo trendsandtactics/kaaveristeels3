@@ -30,15 +30,30 @@ type DynamicItem = {
 export default function DynamicModulePage({ module, heading, subtitle }: { module: string; heading: string; subtitle: string }) {
   const [items, setItems] = useState<DynamicItem[]>([]);
   const [q, setQ] = useState("");
+  const [debouncedQ, setDebouncedQ] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const timeout = setTimeout(() => setDebouncedQ(q), 250);
+    return () => clearTimeout(timeout);
+  }, [q]);
+
+  useEffect(() => {
+    const controller = new AbortController();
     setLoading(true);
-    fetch(`/api/public/content/${module}?q=${encodeURIComponent(q)}`, { cache: "no-store" })
+
+    fetch(`/api/public/content/${module}?q=${encodeURIComponent(debouncedQ)}&limit=24`, { cache: "no-store", signal: controller.signal })
       .then((res) => res.json())
       .then((data) => setItems(data.data ?? []))
+      .catch((error) => {
+        if (error.name !== "AbortError") {
+          setItems([]);
+        }
+      })
       .finally(() => setLoading(false));
-  }, [module, q]);
+
+    return () => controller.abort();
+  }, [module, debouncedQ]);
 
   const featured = useMemo(() => items.filter((item) => item.featured).slice(0, 3), [items]);
   const fallbackImage = MODULE_FALLBACK_IMAGE[module] ?? "/image/kaaveriwbg.png";
