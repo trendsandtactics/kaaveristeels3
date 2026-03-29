@@ -118,6 +118,7 @@ The API auto-creates these tables if they do not exist:
 
 - `quote_requests`
 - `certifications`
+- `cms_uploads` (admin uploaded media/files for CMS modules)
 
 ## Notes
 

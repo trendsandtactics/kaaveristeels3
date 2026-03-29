@@ -237,6 +237,18 @@ export async function ensureDynamicCmsTables(): Promise<void> {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
   `);
 
+
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS cms_uploads (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      file_name VARCHAR(255) NOT NULL,
+      mime_type VARCHAR(120) NOT NULL,
+      file_data LONGBLOB NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
   await pool.query(`
     CREATE TABLE IF NOT EXISTS settings (
       id INT AUTO_INCREMENT PRIMARY KEY,
