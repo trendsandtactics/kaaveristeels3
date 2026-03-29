@@ -3,6 +3,17 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
+const MODULE_FALLBACK_IMAGE: Record<string, string> = {
+  products: "/image/tmtbars.png",
+  blogs: "/image/about1.png",
+  projects: "/image/about2.png",
+  mediaEvents: "/image/kaaveriabout.png",
+  careers: "/image/aboutbackground.png",
+  dealers: "/image/tmtbar.png",
+  galleries: "/image/certificate.jpg",
+  brochures: "/image/billets.png",
+};
+
 type DynamicItem = {
   id: number;
   title: string;
@@ -30,6 +41,7 @@ export default function DynamicModulePage({ module, heading, subtitle }: { modul
   }, [module, q]);
 
   const featured = useMemo(() => items.filter((item) => item.featured).slice(0, 3), [items]);
+  const fallbackImage = MODULE_FALLBACK_IMAGE[module] ?? "/image/kaaveriwbg.png";
 
   return (
     <main className="min-h-screen pt-24 bg-gray-50">
@@ -51,11 +63,15 @@ export default function DynamicModulePage({ module, heading, subtitle }: { modul
         {featured.length > 0 ? (
           <div className="mb-10">
             <h2 className="font-heading text-2xl text-black mb-4">Featured</h2>
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-3 gap-5">
               {featured.map((item) => (
-                <article key={item.id} className="rounded-2xl border border-black/10 bg-white p-5 shadow-sm">
-                  <h3 className="font-heading text-xl">{item.title}</h3>
-                  <p className="text-sm text-black/60 mt-2 line-clamp-3">{item.short_description ?? "No summary available."}</p>
+                <article key={item.id} className="rounded-2xl border border-black/10 bg-white overflow-hidden shadow-sm hover:shadow-xl transition-shadow">
+                  <img src={item.cover_image || fallbackImage} alt={item.title} className="h-44 w-full object-cover" />
+                  <div className="p-5">
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-black/50 font-semibold">Featured</p>
+                    <h3 className="font-heading text-2xl mt-2">{item.title}</h3>
+                    <p className="text-sm text-black/65 mt-2 line-clamp-3">{item.short_description ?? "No summary available."}</p>
+                  </div>
                 </article>
               ))}
             </div>
@@ -64,14 +80,20 @@ export default function DynamicModulePage({ module, heading, subtitle }: { modul
 
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
           {items.map((item) => (
-            <article key={item.id} className="rounded-2xl border border-black/10 bg-white overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
-              {item.cover_image ? <img src={item.cover_image} alt={item.title} className="h-48 w-full object-cover" /> : <div className="h-48 bg-gray-200" />}
+            <article key={item.id} className="group rounded-2xl border border-black/10 bg-white overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+              <div className="relative">
+                <img src={item.cover_image || fallbackImage} alt={item.title} className="h-56 w-full object-cover" />
+                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/70 to-transparent" />
+                <p className="absolute bottom-3 left-4 text-[10px] uppercase tracking-[0.18em] text-white font-semibold">{module}</p>
+              </div>
+
               <div className="p-5">
-                <h3 className="font-heading text-2xl text-black">{item.title}</h3>
+                <h3 className="font-heading text-2xl text-black group-hover:text-accent-red transition-colors">{item.title}</h3>
                 <p className="text-sm text-black/65 mt-2 line-clamp-3">{item.short_description ?? "Content will be updated soon."}</p>
-                <div className="mt-4 flex gap-3">
+
+                <div className="mt-4 flex items-center justify-between">
                   <Link href={`/${module}/${item.slug}`} className="text-sm font-semibold text-accent-red">Read more</Link>
-                  {item.file_url ? <a href={item.file_url} target="_blank" className="text-sm font-semibold text-black/70" rel="noreferrer">Download</a> : null}
+                  {item.file_url ? <a href={item.file_url} target="_blank" className="text-sm font-semibold text-black/70 hover:text-black" rel="noreferrer">Download</a> : null}
                 </div>
               </div>
             </article>
