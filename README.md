@@ -71,6 +71,15 @@ NEXT_PUBLIC_SITE_URL=https://lyfee.in
 
 **Remote SQL note:** if `MYSQL_HOST` is not provided, the app now defaults to `193.203.184.173`.
 
+
+### Dynamic CMS SQL bootstrap
+
+A complete production SQL file for all pending dynamic modules is available at:
+
+- `sql/dynamic_modules_schema.sql`
+
+You can run it directly against MySQL before deploying admin/content APIs.
+
 ### 2) API routes
 
 #### Quote requests
