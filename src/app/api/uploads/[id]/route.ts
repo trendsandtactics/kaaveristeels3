@@ -18,7 +18,9 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     }
 
     const row = rows[0];
-    return new NextResponse(row.file_data, {
+    const body = new Uint8Array(row.file_data);
+
+    return new NextResponse(body, {
       headers: {
         "Content-Type": row.mime_type,
         "Content-Disposition": `inline; filename=\"${row.file_name}\"`,
