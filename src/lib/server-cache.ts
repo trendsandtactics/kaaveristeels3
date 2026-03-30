@@ -22,7 +22,7 @@ export async function getOrSetCache<T>(key: string, ttlMs: number, loader: () =>
 }
 
 export function clearCacheByPrefix(prefix: string): void {
-  for (const key of cacheStore.keys()) {
+  for (const key of Array.from(cacheStore.keys())) {
     if (key.startsWith(prefix)) {
       cacheStore.delete(key);
     }
