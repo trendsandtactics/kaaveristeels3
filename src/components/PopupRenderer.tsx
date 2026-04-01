@@ -36,39 +36,79 @@ export default function PopupRenderer() {
       .catch(() => {});
   }, []);
 
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   if (!popup || !open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-3">
-      
-      {/* Close Button */}
-      <button
-        onClick={() => setOpen(false)}
-        className="absolute top-4 right-4 z-10 h-10 w-10 rounded-full bg-black text-white flex items-center justify-center text-lg shadow-lg"
-      >
-        ✕
-      </button>
-
-      {/* Certificate */}
-      <div className="w-full max-w-3xl max-h-[90vh] flex items-center justify-center">
+    <div className="fixed inset-0 z-[100] bg-black/70 backdrop-blur-[2px] flex items-center justify-center p-3 sm:p-4">
+      <div className="relative w-full flex items-center justify-center">
         <div
-          className="w-full bg-white rounded-xl overflow-hidden shadow-2xl"
-          style={{ aspectRatio: "210 / 297" }}
+          className="
+            relative
+            w-full
+            max-w-[340px]
+            sm:max-w-[420px]
+            md:max-w-[500px]
+            lg:max-w-[560px]
+            xl:max-w-[620px]
+          "
         >
-          {isPdf ? (
-            <iframe
-              src={imageSrc}
-              className="w-full h-full"
-              title="Certificate"
-            />
-          ) : (
-            <img
-              src={imageSrc}
-              alt="Certificate"
-              className="w-full h-full object-contain"
-              onError={() => setImageSrc("/image/certificate.jpg")}
-            />
-          )}
+          <button
+            onClick={() => setOpen(false)}
+            aria-label="Close popup"
+            className="
+              absolute
+              top-2
+              right-2
+              sm:top-3
+              sm:right-3
+              z-20
+              h-10
+              w-10
+              rounded-full
+              bg-black/85
+              text-white
+              flex
+              items-center
+              justify-center
+              text-xl
+              leading-none
+              shadow-lg
+            "
+          >
+            ✕
+          </button>
+
+          <div
+            className="w-full overflow-hidden rounded-2xl bg-white shadow-2xl"
+            style={{ aspectRatio: "210 / 297" }}
+          >
+            {isPdf ? (
+              <iframe
+                src={imageSrc}
+                title="Certificate"
+                className="h-full w-full bg-white"
+              />
+            ) : (
+              <img
+                src={imageSrc}
+                alt="Certificate"
+                className="h-full w-full object-contain bg-white"
+                onError={() => setImageSrc("/image/certificate.jpg")}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
